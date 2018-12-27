@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using static DMMFight.GlobalType;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Serialization;
 
 namespace DMMFight
 {
@@ -12,6 +14,7 @@ namespace DMMFight
 
         private const string attributesCSVPath = @"C:\Users\mash\Desktop\DMM战斗模拟器\模拟\DMMFight\DMMFight\Tabels\S-属性定义_attributes.csv";
         private const string getFightCSVCSVPath = @"C:\Users\mash\Desktop\DMM战斗模拟器\模拟\DMMFight\DMMFight\Tables\S-属性定义_GetFight.csv";
+        private const string dataSavePath = @"C:\Users\mash\Desktop\DMM战斗模拟器\模拟\DMMFight\DMMFight\Tabels\player1.dat";
 
         public static List<AttributesCSV> ReadAttributesFromCSV()
         {
@@ -188,6 +191,76 @@ namespace DMMFight
             s = b.Split('?');
             s = s.Where(sa => !string.IsNullOrEmpty(sa)).ToArray();
             return s;
+        }
+        /// <summary>
+        /// 保存对象到文件中
+        /// </summary>
+        /// <param name="attributes"></param>
+        /// <returns></returns>
+        public static bool SaveData(Attributes attributes)
+        {
+            //序列化
+            FileStream fs = new FileStream(dataSavePath, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
+
+            StreamWriter streamWriter = new StreamWriter(fs, Encoding.GetEncoding(936));
+
+            string strxml = XmlSerialize(attributes);
+            streamWriter.WriteLine(strxml);
+            streamWriter.Close();
+            fs.Close();
+            return true;
+        }
+
+        public static Attributes ReadData()
+        {
+            Attributes attributes = new Attributes();
+            //反序列化
+            FileStream fs = new FileStream(dataSavePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+            StreamReader streamReader = new StreamReader(fs, Encoding.GetEncoding(936));
+            var str = streamReader.ReadToEnd();
+
+            attributes = DESerializer<Attributes>(str);
+            streamReader.Close();
+            fs.Close();
+            return attributes;
+        }
+        /// <summary>
+        /// 将类序列化为xml格式的字符串
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static string XmlSerialize<T>(T obj)
+        {
+            using (StringWriter sw = new StringWriter())
+            {
+                Type t = obj.GetType();
+                XmlSerializer serializer = new XmlSerializer(obj.GetType());
+                serializer.Serialize(sw, obj);
+                sw.Close();
+                return sw.ToString();
+            }
+        }
+        /// <summary>
+        /// 将xml格式的字符串反序列化为类
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="strXML"></param>
+        /// <returns></returns>
+        public static T DESerializer<T>(string strXML) where T : class
+        {
+            try
+            {
+                using (StringReader sr = new StringReader(strXML))
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(T));
+                    return serializer.Deserialize(sr) as T;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 }

@@ -65,16 +65,25 @@ namespace DMMFight
         /// <param name="e"></param>
         private void StartFight_Click(object sender, EventArgs e)
         {
+            if (GlobalData.Attributes.Count < 2)
+            {
+                MessageBox.Show("当前对象池中对象数量小于两个,请检查");
+                return;
+            }
+
             var newForm = new FightingForm();
             newForm.ShowDialog();
         }
         /// <summary>
         /// 将当前玩家的属性保存到配置文件
         /// </summary>
-        /// <param name="sender"></param>
+        /// <param name="sender"></param>1
         /// <param name="e"></param>
         private void SaveData_Click(object sender, EventArgs e)
         {
+            CSVRead.SaveData(GlobalData.Attributes[0]);
+
+            var n = CSVRead.ReadData();
 
         }
         /// <summary>
@@ -103,7 +112,7 @@ namespace DMMFight
                     CSVRead.SetModelValue(GlobalData.AttributesCSVs[i].key, float.Parse(controls[0].Text), player1);
                 }            
             }
-          
+            GlobalData.Attributes.Add(player1);
         }
         /// <summary>
         /// 窗口加载完成回调
@@ -182,5 +191,14 @@ namespace DMMFight
             return controls;
         }
 
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_MouseClick(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 }

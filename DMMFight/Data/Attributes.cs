@@ -12,6 +12,14 @@ namespace DMMFight
     public class Attributes
     {
         /// <summary>
+        /// 对象名称
+        /// </summary>
+        public string name;
+        /// <summary>
+        /// 对象阵营
+        /// </summary>
+        public int camp;
+        /// <summary>
         /// 战力
         /// <summary>
         public float fightForce { set; get; }

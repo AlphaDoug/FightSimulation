@@ -61,7 +61,7 @@
             // NextBtn
             // 
             this.NextBtn.Font = new System.Drawing.Font("宋体", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.NextBtn.Location = new System.Drawing.Point(324, 289);
+            this.NextBtn.Location = new System.Drawing.Point(327, 268);
             this.NextBtn.Name = "NextBtn";
             this.NextBtn.Size = new System.Drawing.Size(142, 49);
             this.NextBtn.TabIndex = 2;

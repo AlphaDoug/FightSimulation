@@ -15,5 +15,7 @@ namespace DMMFight
         /// </summary>
         public static List<Attributes> Attributes = new List<Attributes>();
         public static int campNum = 2;
+        public const string presetPlayer1 = @"C:\Users\mash\Desktop\DMM战斗模拟器\模拟\DMMFight\DMMFight\Tabels\PresetPlayer1.dat";
+        public const string presetPlayer2 = @"C:\Users\mash\Desktop\DMM战斗模拟器\模拟\DMMFight\DMMFight\Tabels\PresetPlayer2.dat";
     }
 }
