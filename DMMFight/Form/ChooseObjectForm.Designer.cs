@@ -30,36 +30,36 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.CampCombox = new System.Windows.Forms.ComboBox();
-            this.ShowMaxDef = new System.Windows.Forms.Label();
-            this.ShowMaxAtk = new System.Windows.Forms.Label();
-            this.ShowHP = new System.Windows.Forms.Label();
-            this.ShowName = new System.Windows.Forms.Label();
-            this.ShowPanel1 = new System.Windows.Forms.Panel();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label95 = new System.Windows.Forms.Label();
-            this.label93 = new System.Windows.Forms.Label();
-            this.label92 = new System.Windows.Forms.Label();
-            this.label84 = new System.Windows.Forms.Label();
+            this.ShowPanel_0 = new System.Windows.Forms.Panel();
+            this.CampCombox_0 = new System.Windows.Forms.ComboBox();
+            this.ShowMaxDef_0 = new System.Windows.Forms.Label();
+            this.ShowMaxAtk_0 = new System.Windows.Forms.Label();
+            this.ShowHP_0 = new System.Windows.Forms.Label();
+            this.ShowPanel_1 = new System.Windows.Forms.Panel();
+            this.CampCombox_1 = new System.Windows.Forms.ComboBox();
+            this.ShowMaxDef_1 = new System.Windows.Forms.Label();
+            this.labelShowMaxAtk_193 = new System.Windows.Forms.Label();
+            this.ShowHP_1 = new System.Windows.Forms.Label();
             this.StartFight = new System.Windows.Forms.Button();
             this.ReadData = new System.Windows.Forms.Button();
             this.SaveData = new System.Windows.Forms.Button();
             this.AddObj = new System.Windows.Forms.Button();
             this.DeleteObj = new System.Windows.Forms.Button();
             this.RefreshObj = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.AttribatesShowTab_0 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.ShowName_0 = new System.Windows.Forms.TextBox();
+            this.ShowName_1 = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.ShowPanel1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.ShowPanel_0.SuspendLayout();
+            this.ShowPanel_1.SuspendLayout();
+            this.AttribatesShowTab_0.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -78,154 +78,131 @@
             // 
             // flowLayoutPanel4
             // 
-            this.flowLayoutPanel4.Controls.Add(this.panel1);
-            this.flowLayoutPanel4.Controls.Add(this.ShowPanel1);
+            this.flowLayoutPanel4.Controls.Add(this.ShowPanel_0);
+            this.flowLayoutPanel4.Controls.Add(this.ShowPanel_1);
             this.flowLayoutPanel4.Location = new System.Drawing.Point(6, 42);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
             this.flowLayoutPanel4.Size = new System.Drawing.Size(602, 357);
             this.flowLayoutPanel4.TabIndex = 1;
             // 
-            // panel1
+            // ShowPanel_0
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.CampCombox);
-            this.panel1.Controls.Add(this.ShowMaxDef);
-            this.panel1.Controls.Add(this.ShowMaxAtk);
-            this.panel1.Controls.Add(this.ShowHP);
-            this.panel1.Controls.Add(this.ShowName);
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(587, 44);
-            this.panel1.TabIndex = 0;
-            this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseClick);
+            this.ShowPanel_0.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.ShowPanel_0.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ShowPanel_0.Controls.Add(this.ShowName_0);
+            this.ShowPanel_0.Controls.Add(this.CampCombox_0);
+            this.ShowPanel_0.Controls.Add(this.ShowMaxDef_0);
+            this.ShowPanel_0.Controls.Add(this.ShowMaxAtk_0);
+            this.ShowPanel_0.Controls.Add(this.ShowHP_0);
+            this.ShowPanel_0.Location = new System.Drawing.Point(3, 3);
+            this.ShowPanel_0.Name = "ShowPanel_0";
+            this.ShowPanel_0.Size = new System.Drawing.Size(587, 44);
+            this.ShowPanel_0.TabIndex = 0;
             // 
-            // CampCombox
+            // CampCombox_0
             // 
-            this.CampCombox.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.CampCombox.FormattingEnabled = true;
-            this.CampCombox.Items.AddRange(new object[] {
+            this.CampCombox_0.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.CampCombox_0.FormattingEnabled = true;
+            this.CampCombox_0.Items.AddRange(new object[] {
             "阵营A",
             "阵营B",
             "阵营C",
             "阵营D",
             "阵营E",
             "阵营F"});
-            this.CampCombox.Location = new System.Drawing.Point(110, 3);
-            this.CampCombox.Name = "CampCombox";
-            this.CampCombox.Size = new System.Drawing.Size(85, 30);
-            this.CampCombox.TabIndex = 1;
-            this.CampCombox.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.CampCombox_0.Location = new System.Drawing.Point(110, 3);
+            this.CampCombox_0.Name = "CampCombox_0";
+            this.CampCombox_0.Size = new System.Drawing.Size(85, 30);
+            this.CampCombox_0.TabIndex = 1;
             // 
-            // ShowMaxDef
+            // ShowMaxDef_0
             // 
-            this.ShowMaxDef.AutoSize = true;
-            this.ShowMaxDef.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ShowMaxDef.Location = new System.Drawing.Point(465, 10);
-            this.ShowMaxDef.Name = "ShowMaxDef";
-            this.ShowMaxDef.Size = new System.Drawing.Size(109, 21);
-            this.ShowMaxDef.TabIndex = 0;
-            this.ShowMaxDef.Text = "防御:1000000";
+            this.ShowMaxDef_0.AutoSize = true;
+            this.ShowMaxDef_0.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ShowMaxDef_0.Location = new System.Drawing.Point(465, 10);
+            this.ShowMaxDef_0.Name = "ShowMaxDef_0";
+            this.ShowMaxDef_0.Size = new System.Drawing.Size(109, 21);
+            this.ShowMaxDef_0.TabIndex = 0;
+            this.ShowMaxDef_0.Text = "防御:1000000";
             // 
-            // ShowMaxAtk
+            // ShowMaxAtk_0
             // 
-            this.ShowMaxAtk.AutoSize = true;
-            this.ShowMaxAtk.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ShowMaxAtk.Location = new System.Drawing.Point(314, 10);
-            this.ShowMaxAtk.Name = "ShowMaxAtk";
-            this.ShowMaxAtk.Size = new System.Drawing.Size(141, 21);
-            this.ShowMaxAtk.TabIndex = 0;
-            this.ShowMaxAtk.Text = "最大攻击:2100000";
+            this.ShowMaxAtk_0.AutoSize = true;
+            this.ShowMaxAtk_0.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ShowMaxAtk_0.Location = new System.Drawing.Point(314, 10);
+            this.ShowMaxAtk_0.Name = "ShowMaxAtk_0";
+            this.ShowMaxAtk_0.Size = new System.Drawing.Size(141, 21);
+            this.ShowMaxAtk_0.TabIndex = 0;
+            this.ShowMaxAtk_0.Text = "最大攻击:2100000";
             // 
-            // ShowHP
+            // ShowHP_0
             // 
-            this.ShowHP.AutoSize = true;
-            this.ShowHP.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ShowHP.Location = new System.Drawing.Point(201, 10);
-            this.ShowHP.Name = "ShowHP";
-            this.ShowHP.Size = new System.Drawing.Size(108, 21);
-            this.ShowHP.TabIndex = 0;
-            this.ShowHP.Text = "HP:10000000";
+            this.ShowHP_0.AutoSize = true;
+            this.ShowHP_0.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ShowHP_0.Location = new System.Drawing.Point(201, 10);
+            this.ShowHP_0.Name = "ShowHP_0";
+            this.ShowHP_0.Size = new System.Drawing.Size(108, 21);
+            this.ShowHP_0.TabIndex = 0;
+            this.ShowHP_0.Text = "HP:10000000";
             // 
-            // ShowName
+            // ShowPanel_1
             // 
-            this.ShowName.AutoSize = true;
-            this.ShowName.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ShowName.Location = new System.Drawing.Point(3, 10);
-            this.ShowName.Name = "ShowName";
-            this.ShowName.Size = new System.Drawing.Size(106, 21);
-            this.ShowName.TabIndex = 0;
-            this.ShowName.Text = "玩家名字六字";
+            this.ShowPanel_1.BackColor = System.Drawing.SystemColors.Control;
+            this.ShowPanel_1.Controls.Add(this.ShowName_1);
+            this.ShowPanel_1.Controls.Add(this.CampCombox_1);
+            this.ShowPanel_1.Controls.Add(this.ShowMaxDef_1);
+            this.ShowPanel_1.Controls.Add(this.labelShowMaxAtk_193);
+            this.ShowPanel_1.Controls.Add(this.ShowHP_1);
+            this.ShowPanel_1.Location = new System.Drawing.Point(3, 53);
+            this.ShowPanel_1.Name = "ShowPanel_1";
+            this.ShowPanel_1.Size = new System.Drawing.Size(587, 44);
+            this.ShowPanel_1.TabIndex = 0;
             // 
-            // ShowPanel1
+            // CampCombox_1
             // 
-            this.ShowPanel1.BackColor = System.Drawing.SystemColors.Control;
-            this.ShowPanel1.Controls.Add(this.comboBox1);
-            this.ShowPanel1.Controls.Add(this.label95);
-            this.ShowPanel1.Controls.Add(this.label93);
-            this.ShowPanel1.Controls.Add(this.label92);
-            this.ShowPanel1.Controls.Add(this.label84);
-            this.ShowPanel1.Location = new System.Drawing.Point(3, 53);
-            this.ShowPanel1.Name = "ShowPanel1";
-            this.ShowPanel1.Size = new System.Drawing.Size(587, 44);
-            this.ShowPanel1.TabIndex = 0;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.CampCombox_1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.CampCombox_1.FormattingEnabled = true;
+            this.CampCombox_1.Items.AddRange(new object[] {
             "阵营A",
             "阵营B",
             "阵营C",
             "阵营D",
             "阵营E",
             "阵营F"});
-            this.comboBox1.Location = new System.Drawing.Point(110, 3);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(85, 30);
-            this.comboBox1.TabIndex = 1;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.CampCombox_1.Location = new System.Drawing.Point(110, 3);
+            this.CampCombox_1.Name = "CampCombox_1";
+            this.CampCombox_1.Size = new System.Drawing.Size(85, 30);
+            this.CampCombox_1.TabIndex = 1;
             // 
-            // label95
+            // ShowMaxDef_1
             // 
-            this.label95.AutoSize = true;
-            this.label95.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label95.Location = new System.Drawing.Point(465, 10);
-            this.label95.Name = "label95";
-            this.label95.Size = new System.Drawing.Size(109, 21);
-            this.label95.TabIndex = 0;
-            this.label95.Text = "防御:1000000";
+            this.ShowMaxDef_1.AutoSize = true;
+            this.ShowMaxDef_1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ShowMaxDef_1.Location = new System.Drawing.Point(465, 10);
+            this.ShowMaxDef_1.Name = "ShowMaxDef_1";
+            this.ShowMaxDef_1.Size = new System.Drawing.Size(109, 21);
+            this.ShowMaxDef_1.TabIndex = 0;
+            this.ShowMaxDef_1.Text = "防御:1000000";
             // 
-            // label93
+            // labelShowMaxAtk_193
             // 
-            this.label93.AutoSize = true;
-            this.label93.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label93.Location = new System.Drawing.Point(314, 10);
-            this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(141, 21);
-            this.label93.TabIndex = 0;
-            this.label93.Text = "最大攻击:2100000";
+            this.labelShowMaxAtk_193.AutoSize = true;
+            this.labelShowMaxAtk_193.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelShowMaxAtk_193.Location = new System.Drawing.Point(314, 10);
+            this.labelShowMaxAtk_193.Name = "labelShowMaxAtk_193";
+            this.labelShowMaxAtk_193.Size = new System.Drawing.Size(141, 21);
+            this.labelShowMaxAtk_193.TabIndex = 0;
+            this.labelShowMaxAtk_193.Text = "最大攻击:2100000";
             // 
-            // label92
+            // ShowHP_1
             // 
-            this.label92.AutoSize = true;
-            this.label92.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label92.Location = new System.Drawing.Point(201, 10);
-            this.label92.Name = "label92";
-            this.label92.Size = new System.Drawing.Size(108, 21);
-            this.label92.TabIndex = 0;
-            this.label92.Text = "HP:10000000";
-            // 
-            // label84
-            // 
-            this.label84.AutoSize = true;
-            this.label84.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label84.Location = new System.Drawing.Point(3, 10);
-            this.label84.Name = "label84";
-            this.label84.Size = new System.Drawing.Size(106, 21);
-            this.label84.TabIndex = 0;
-            this.label84.Text = "玩家名字六字";
+            this.ShowHP_1.AutoSize = true;
+            this.ShowHP_1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ShowHP_1.Location = new System.Drawing.Point(201, 10);
+            this.ShowHP_1.Name = "ShowHP_1";
+            this.ShowHP_1.Size = new System.Drawing.Size(108, 21);
+            this.ShowHP_1.TabIndex = 0;
+            this.ShowHP_1.Text = "HP:10000000";
             // 
             // StartFight
             // 
@@ -291,16 +268,16 @@
             this.RefreshObj.UseVisualStyleBackColor = true;
             this.RefreshObj.Click += new System.EventHandler(this.RefreshObj_Click);
             // 
-            // tabControl1
+            // AttribatesShowTab_0
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(718, 34);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(356, 405);
-            this.tabControl1.TabIndex = 3;
+            this.AttribatesShowTab_0.Controls.Add(this.tabPage1);
+            this.AttribatesShowTab_0.Controls.Add(this.tabPage2);
+            this.AttribatesShowTab_0.Controls.Add(this.tabPage3);
+            this.AttribatesShowTab_0.Location = new System.Drawing.Point(718, 34);
+            this.AttribatesShowTab_0.Name = "AttribatesShowTab_0";
+            this.AttribatesShowTab_0.SelectedIndex = 0;
+            this.AttribatesShowTab_0.Size = new System.Drawing.Size(356, 405);
+            this.AttribatesShowTab_0.TabIndex = 3;
             // 
             // tabPage1
             // 
@@ -358,13 +335,29 @@
             this.flowLayoutPanel3.Size = new System.Drawing.Size(342, 373);
             this.flowLayoutPanel3.TabIndex = 1;
             // 
+            // ShowName_0
+            // 
+            this.ShowName_0.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ShowName_0.Location = new System.Drawing.Point(5, 4);
+            this.ShowName_0.Name = "ShowName_0";
+            this.ShowName_0.Size = new System.Drawing.Size(100, 29);
+            this.ShowName_0.TabIndex = 2;
+            // 
+            // ShowName_1
+            // 
+            this.ShowName_1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ShowName_1.Location = new System.Drawing.Point(7, 4);
+            this.ShowName_1.Name = "ShowName_1";
+            this.ShowName_1.Size = new System.Drawing.Size(100, 29);
+            this.ShowName_1.TabIndex = 3;
+            // 
             // ChooseObjectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1122, 612);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.AttribatesShowTab_0);
             this.Controls.Add(this.DeleteObj);
             this.Controls.Add(this.RefreshObj);
             this.Controls.Add(this.AddObj);
@@ -377,11 +370,11 @@
             this.Load += new System.EventHandler(this.ChooseObjectForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.flowLayoutPanel4.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.ShowPanel1.ResumeLayout(false);
-            this.ShowPanel1.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
+            this.ShowPanel_0.ResumeLayout(false);
+            this.ShowPanel_0.PerformLayout();
+            this.ShowPanel_1.ResumeLayout(false);
+            this.ShowPanel_1.PerformLayout();
+            this.AttribatesShowTab_0.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
@@ -398,12 +391,11 @@
         private System.Windows.Forms.Button AddObj;
         private System.Windows.Forms.Button DeleteObj;
         private System.Windows.Forms.Button RefreshObj;
-        private System.Windows.Forms.Panel ShowPanel1;
-        private System.Windows.Forms.Label label95;
-        private System.Windows.Forms.Label label93;
-        private System.Windows.Forms.Label label92;
-        private System.Windows.Forms.Label label84;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.Panel ShowPanel_1;
+        private System.Windows.Forms.Label ShowMaxDef_1;
+        private System.Windows.Forms.Label labelShowMaxAtk_193;
+        private System.Windows.Forms.Label ShowHP_1;
+        private System.Windows.Forms.TabControl AttribatesShowTab_0;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.TabPage tabPage2;
@@ -411,12 +403,13 @@
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ComboBox CampCombox;
-        private System.Windows.Forms.Label ShowMaxDef;
-        private System.Windows.Forms.Label ShowMaxAtk;
-        private System.Windows.Forms.Label ShowHP;
-        private System.Windows.Forms.Label ShowName;
+        private System.Windows.Forms.ComboBox CampCombox_1;
+        private System.Windows.Forms.Panel ShowPanel_0;
+        private System.Windows.Forms.ComboBox CampCombox_0;
+        private System.Windows.Forms.Label ShowMaxDef_0;
+        private System.Windows.Forms.Label ShowMaxAtk_0;
+        private System.Windows.Forms.Label ShowHP_0;
+        private System.Windows.Forms.TextBox ShowName_0;
+        private System.Windows.Forms.TextBox ShowName_1;
     }
 }

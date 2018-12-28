@@ -14,7 +14,6 @@ namespace DMMFight
 
         private const string attributesCSVPath = @"C:\Users\mash\Desktop\DMM战斗模拟器\模拟\DMMFight\DMMFight\Tabels\S-属性定义_attributes.csv";
         private const string getFightCSVCSVPath = @"C:\Users\mash\Desktop\DMM战斗模拟器\模拟\DMMFight\DMMFight\Tables\S-属性定义_GetFight.csv";
-        private const string dataSavePath = @"C:\Users\mash\Desktop\DMM战斗模拟器\模拟\DMMFight\DMMFight\Tabels\player1.dat";
 
         public static List<AttributesCSV> ReadAttributesFromCSV()
         {
@@ -197,21 +196,30 @@ namespace DMMFight
         /// </summary>
         /// <param name="attributes"></param>
         /// <returns></returns>
-        public static bool SaveData(Attributes attributes)
+        public static bool SaveData(Attributes attributes, string path)
         {
-            //序列化
-            FileStream fs = new FileStream(dataSavePath, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
-
+            FileStream fs = new FileStream(path, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
             StreamWriter streamWriter = new StreamWriter(fs, Encoding.GetEncoding(936));
-
-            string strxml = XmlSerialize(attributes);
-            streamWriter.WriteLine(strxml);
-            streamWriter.Close();
-            fs.Close();
-            return true;
+            try
+            {
+                string strxml = XmlSerialize(attributes);
+                streamWriter.WriteLine(strxml);
+                streamWriter.Close();
+                fs.Close();
+                return true;
+            }
+            catch (Exception)
+            {
+                streamWriter.Close();
+                fs.Close();
+                return false;
+                throw;
+            }
+            
+            
         }
 
-        public static Attributes ReadData()
+        public static Attributes ReadData(string dataSavePath)
         {
             Attributes attributes = new Attributes();
             //反序列化

@@ -10,55 +10,56 @@ namespace DMMFight.Data
     /// <summary>
     /// 在选择对象时进行简要属性的显示信息类
     /// </summary>
-    class SimpleInfo :Panel
+    class SimpleInfo
     {
+
+        /// <summary>
+        /// 对象唯一标识符
+        /// </summary>
+        public int ID;
         /// <summary>
         /// 名字
         /// </summary>
-        private string name;
+        public string name;
         /// <summary>
         /// 阵营
         /// </summary>
-        private string camp;
+        public int camp;
         /// <summary>
         /// 最大生命
         /// </summary>
-        private string maxHp;
+        public float maxHp;
         /// <summary>
         /// 最大攻击
         /// </summary>
-        private string maxAtk;
+        public float maxAtk;
         /// <summary>
         /// 最小攻击
         /// </summary>
-        private string minAtk;
+        public float minAtk;
         /// <summary>
         /// 防御
         /// </summary>
-        private string def;
+        public float def;
 
-        private Label nameLabel = new Label();
 
-        private Label campLabel = new Label();
-
-        private Label maxHpLabel = new Label();
-
-        private Label maxAtkLabel = new Label();
-
-        private Label minAtkLabel = new Label();
-
-        private Label defLabel = new Label();
-
-        public SimpleInfo()
+        public SimpleInfo(int id)
         {
+            ID = id;
             //nameLabel.Size = new System.Drawing.Size()
+            for (int i = 0; i < GlobalData.Attributes.Count; i++)
+            {
+                if (GlobalData.Attributes[i].id == ID)
+                {
+                    name = GlobalData.Attributes[i].name;
+                    camp = GlobalData.Attributes[i].camp;
+                    maxHp = GlobalData.Attributes[i].hp;
+                    maxAtk = GlobalData.Attributes[i].atkMax;
+                    def = GlobalData.Attributes[i].def;
+                }
+            }
+            
 
-            Controls.Add(nameLabel);
-            Controls.Add(campLabel);
-            Controls.Add(maxHpLabel);
-            Controls.Add(maxAtkLabel);
-            Controls.Add(minAtkLabel);
-            Controls.Add(defLabel);
         }
     }
 }

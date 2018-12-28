@@ -81,9 +81,7 @@ namespace DMMFight
         /// <param name="e"></param>
         private void SaveData_Click(object sender, EventArgs e)
         {
-            CSVRead.SaveData(GlobalData.Attributes[0]);
 
-            var n = CSVRead.ReadData();
 
         }
         /// <summary>
@@ -139,6 +137,8 @@ namespace DMMFight
                 b.Location = new Point(164, 3);
                 b.Font = new Font("宋体", 16.0f, FontStyle.Regular);
                 b.Name = GlobalData.AttributesCSVs[i].key;
+                //注册属性值更改事件
+                b.LostFocus += new EventHandler(ValueChange);
 
                 var c = new Panel();
                 c.Size = new Size(284, 39);
@@ -163,6 +163,16 @@ namespace DMMFight
                 }
             }
 
+            //读取两个预设的玩家属性进入对象池中
+            Attributes player1 = new Attributes();
+            Attributes player2 = new Attributes();
+            player1 = CSVRead.ReadData(GlobalData.presetPlayer1);
+            player2 = CSVRead.ReadData(GlobalData.presetPlayer2);
+            GlobalData.Attributes.Clear();
+            GlobalData.Attributes.Add(player1);
+            GlobalData.Attributes.Add(player2);
+
+            
 
         }
 
@@ -191,13 +201,78 @@ namespace DMMFight
             return controls;
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void ValueChange(object sender, EventArgs e)
         {
-
+            var box = (Control)sender;
+            var changedValue = box.Text;
+            var fieldName = box.Name;
+            Debug.LogOut("属性值更改了");
+            var tabPanelName = box.Parent.Parent.Parent.Parent.Name;
+            var id = tabPanelName.Split('_')[1];
+            if (id == "0")
+            {
+                return;
+            }
+            else
+            {
+                for (int i = 0; i < GlobalData.Attributes.Count; i++)
+                {
+                    if (GlobalData.Attributes[i].id == int.Parse(id))//若当前显示ID和对象池中的ID相同,则会更新对应的属性值
+                    {
+                        if (!CSVRead.SetModelValue(fieldName, float.Parse(changedValue), GlobalData.Attributes[i]))
+                        {
+                            MessageBox.Show("属性值更新失败,请检查输入是否合法");
+                        }
+                       
+                        return;
+                    }
+                }
+            }
+            MessageBox.Show("属性值更新失败,请检查输入是否合法");
         }
 
-        private void panel1_MouseClick(object sender, MouseEventArgs e)
+        private void CreatSimplePanel(int id)
         {
+            Attributes attributes = new Attributes();
+
+            for (int i = 0; i < GlobalData.Attributes.Count; i++)
+            {
+                if (GlobalData.Attributes[i].id == id)
+                {
+                    attributes = GlobalData.Attributes[i];
+                }
+            }
+
+            TextBox textBox = new TextBox();
+            textBox.Size = new Size(100, 29);
+            textBox.Location = new Point(5, 4);
+            textBox.Name = "ShowName_" + attributes.id;
+
+            ComboBox comboBox = new ComboBox();
+            comboBox.Size = new Size(85, 30);
+            comboBox.Location = new Point(110, 3);
+            comboBox.Font = new Font("微软雅黑", 12, FontStyle.Bold);
+            comboBox.Name = "CampCombox_" + attributes.id;
+
+            Label label1 = new Label();
+            label1.Size = new Size(108, 21);
+            label1.Location = new Point(201, 10);
+            label1.Name = "ShowHP_" + attributes.id;
+
+            Label label2 = new Label();
+            label2.Size = new Size(141, 21);
+            label2.Location = new Point(314, 10);
+            label2.Name = "ShowMaxAtk" + attributes.id;
+
+            Label label3 = new Label();
+            label3.Size = new Size(109, 21);
+            label3.Location = new Point(465, 10);
+            label3.Name = "ShowDef" + attributes.id;
+
+            Panel templet = new Panel();
+            templet.Size = new Size(587, 44);
+            templet.Location = new Point(3, 3);
+            templet.Name = "SimplePanel_" + attributes.id;
 
         }
     }

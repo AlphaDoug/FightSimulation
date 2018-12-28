@@ -12,13 +12,17 @@ namespace DMMFight
     public class Attributes
     {
         /// <summary>
+        /// 对象唯一标识符
+        /// </summary>
+        public int id { set; get; }
+        /// <summary>
         /// 对象名称
         /// </summary>
-        public string name;
+        public string name { set; get; }
         /// <summary>
         /// 对象阵营
         /// </summary>
-        public int camp;
+        public int camp { set; get; }
         /// <summary>
         /// 战力
         /// <summary>

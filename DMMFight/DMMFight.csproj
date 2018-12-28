@@ -49,9 +49,7 @@
     <Compile Include="Data\Attributes.cs" />
     <Compile Include="Data\CSVRead.cs" />
     <Compile Include="Data\GlobalData.cs" />
-    <Compile Include="Data\SimpleInfo.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Data\SimpleInfo.cs" />
     <Compile Include="Form\ChooseObjectForm.cs">
       <SubType>Form</SubType>
     </Compile>
