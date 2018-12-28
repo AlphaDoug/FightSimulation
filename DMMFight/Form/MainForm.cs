@@ -24,7 +24,7 @@ namespace DMMFight
         /// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {
-
+            ChooseNumComboBox.SelectedIndex = 0;
 
         }
 

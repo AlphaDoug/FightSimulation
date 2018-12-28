@@ -78,6 +78,7 @@
             this.Controls.Add(this.ChooseNumComboBox);
             this.Controls.Add(this.label1);
             this.Name = "FightSimulations";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "战斗模拟";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);

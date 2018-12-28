@@ -160,8 +160,9 @@ namespace DMMFight
         /// <param name="Value">值</param>
         /// <param name="obj">类对象</param>
         /// <returns></returns>
-        public static bool SetModelValue(string FieldName, object Value, object obj)
+        public static bool SetModelValue(string FieldName, string Value, object obj)
         {
+
             try
             {
                 Type Ts = obj.GetType();
@@ -170,12 +171,65 @@ namespace DMMFight
                 a.SetValue(obj, Value, null);
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Debug.LogOut(e.Message);
                 return false;
             }
         }
-        
+
+
+        /// <summary>
+        /// 设置类中的属性
+        /// </summary>
+        /// <param name="FieldName">属性名称</param>
+        /// <param name="Value">值</param>
+        /// <param name="obj">类对象</param>
+        /// <returns></returns>
+        public static bool SetModelValue(string FieldName, float Value, object obj)
+        {
+
+            try
+            {
+                Type Ts = obj.GetType();
+                var a = Ts.GetProperty(FieldName);
+
+                a.SetValue(obj, Value, null);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogOut(e.Message);
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// 设置类中的属性
+        /// </summary>
+        /// <param name="FieldName">属性名称</param>
+        /// <param name="Value">值</param>
+        /// <param name="obj">类对象</param>
+        /// <returns></returns>
+        public static bool SetModelValue(string FieldName, int Value, object obj)
+        {
+
+            try
+            {
+                Type Ts = obj.GetType();
+                var a = Ts.GetProperty(FieldName);
+
+                a.SetValue(obj, Value, null);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogOut(e.Message);
+                return false;
+            }
+        }
+
         public static string[] ConverStr(string str)
         {
             if (str == null)

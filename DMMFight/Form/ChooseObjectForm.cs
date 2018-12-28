@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -104,7 +105,7 @@ namespace DMMFight
             //将右侧的属性更新到一个新的属性类中
             for (int i = 0; i < GlobalData.AttributesCSVs.Count; i++)
             {
-                var controls = GetControls(this, GlobalData.AttributesCSVs[i].key);
+                var controls = GetControls(this, GlobalData.AttributesCSVs[i].key,1);
                 if (controls != null && controls.Count > 0)
                 {
                     CSVRead.SetModelValue(GlobalData.AttributesCSVs[i].key, float.Parse(controls[0].Text), player1);
@@ -172,42 +173,201 @@ namespace DMMFight
             GlobalData.Attributes.Add(player1);
             GlobalData.Attributes.Add(player2);
 
-            
+            CreatSimplePanel(player1.id);
 
+            CreatSimplePanel(player2.id);
         }
 
         /// <summary>
-        /// 获取父控件下所有指定名称的子控件
+        /// 递归获取父控件下所有指定名称的子控件
         /// </summary>
         /// <param name="fatherControl"></param>
         /// <returns></returns>
-        private List<Control> GetControls(Control fatherControl,string name)
+        private List<Control> GetControls(Control fatherControl,string name,int nameType)
         {
             Control.ControlCollection sonControls = fatherControl.Controls;
             List<Control> controls = new List<Control>();
-            //遍历所有控件
-            foreach (Control control in sonControls)
+
+            if (nameType == 1)
             {
-                //Debug.LogOut(control.Name);
-                if (control.Name == name)
+                //全字匹配
+                //遍历所有控件
+                foreach (Control control in sonControls)
                 {
-                    controls.Add(control);
-                }
-                if (control.Controls != null)
-                {
-                    controls.AddRange(GetControls(control, name));
+                    if (control.Name == name)
+                    {
+                        controls.Add(control);
+                    }
+                    if (control.Controls != null)
+                    {
+                        controls.AddRange(GetControls(control, name, nameType));
+                    }
                 }
             }
+            else
+            {
+                //下划线前匹配
+                foreach (Control control in sonControls)
+                {
+                    if (control.Name.Split('_').Length > 0 && control.Name.Split('_')[0] == name)
+                    {
+                        controls.Add(control);
+                    }
+                    if (control.Controls != null)
+                    {
+                        controls.AddRange(GetControls(control, name, nameType));
+                    }
+                }
+            }
+
             return controls;
         }
 
         private void ValueChange(object sender, EventArgs e)
         {
-            var box = (Control)sender;
-            var changedValue = box.Text;
-            var fieldName = box.Name;
+
+            switch (sender.GetType().ToString())
+            {
+                case "System.Windows.Forms.TextBox":
+                    TextBoxValueChange((TextBox)sender, e);
+                    break;
+
+                case "System.Windows.Forms.ComboBox":
+                    ComboBoxValueChange((ComboBox)sender, e);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void TextBoxValueChange(TextBox sender,EventArgs e)
+        {
+            string changedValueString = sender.Text;
+            float changedValueFloat = 0;
+            var fieldName = "";
+            var tabPanelName = sender.Name;
+
+
             Debug.LogOut("属性值更改了");
-            var tabPanelName = box.Parent.Parent.Parent.Parent.Name;
+            if (tabPanelName.Split('_').Length < 2)
+            {
+                changedValueString = sender.Text;
+                try
+                {
+                    changedValueFloat = float.Parse(changedValueString);
+                }
+                catch (Exception a)
+                {
+                    Debug.LogOut(a.Message);
+                    MessageBox.Show("请检查输入的数据格式");
+                    return;
+                    throw;
+                }
+
+                tabPanelName = sender.Parent.Parent.Parent.Parent.Name;
+                fieldName = sender.Name;
+            }
+            else
+            {
+                tabPanelName = sender.Name;
+
+                //更改名字
+                fieldName = "name";
+
+            }
+            var id = tabPanelName.Split('_')[1];
+            if (id == "0")
+            {
+                return;
+            }
+            else
+            {
+                if (fieldName == "name")
+                {
+                    for (int i = 0; i < GlobalData.Attributes.Count; i++)
+                    {
+                        if (GlobalData.Attributes[i].id == int.Parse(id))//若当前显示ID和对象池中的ID相同,则会更新对应的属性值
+                        {
+                            if (!CSVRead.SetModelValue(fieldName, changedValueString, GlobalData.Attributes[i]))
+                            {
+                                MessageBox.Show("属性值更新失败,请检查输入是否合法");
+                            }
+
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < GlobalData.Attributes.Count; i++)
+                    {
+                        if (GlobalData.Attributes[i].id == int.Parse(id))//若当前显示ID和对象池中的ID相同,则会更新对应的属性值
+                        {
+                            if (!CSVRead.SetModelValue(fieldName, changedValueFloat, GlobalData.Attributes[i]))
+                            {
+                                MessageBox.Show("属性值更新失败,请检查输入是否合法");
+                            }
+
+                            return;
+                        }
+                    }
+                }
+
+            }
+            MessageBox.Show("属性值更新失败,请检查输入是否合法");
+        }
+
+        private void SimpleInfoOnClick(object sender, EventArgs e)
+        {
+            int id = 0;
+            try
+            {
+                id = int.Parse(((Control)sender).Name.Split('_')[1]);
+                if (((Control)sender).BackColor != Color.Silver)
+                {
+                    ((Control)sender).BackColor = Color.Silver;
+                    //((Panel)sender).BorderStyle = BorderStyle.Fixed3D;
+                }
+                else
+                {
+                    ((Control)sender).BackColor = Control.DefaultBackColor;
+                   // ((Panel)sender).BorderStyle = BorderStyle.None;
+                }
+            }
+            catch 
+            {
+                id = int.Parse(((Control)sender).Parent.Name.Split('_')[1]);
+                if (((Control)sender).Parent.BackColor != Color.Silver)
+                {
+                    ((Control)sender).Parent.BackColor = Color.Silver;
+                   // ((Panel)(((Panel)sender).Parent)).BorderStyle = BorderStyle.Fixed3D;
+                }
+                else
+                {
+                    ((Control)sender).Parent.BackColor = Control.DefaultBackColor;
+                   // ((Panel)(((Panel)sender).Parent)).BorderStyle = BorderStyle.None;
+                }
+            }
+            
+            SetAttributesToRight(id);
+
+        }
+
+        private void ComboBoxValueChange(ComboBox sender, EventArgs e)
+        {
+            int changedValue = 0;
+            var fieldName = "";
+            var tabPanelName = sender.Name;
+
+
+            Debug.LogOut("属性值更改了");
+
+            tabPanelName = sender.Name;
+
+            changedValue = sender.SelectedIndex;
+            fieldName = "camp";
+
+
             var id = tabPanelName.Split('_')[1];
             if (id == "0")
             {
@@ -219,18 +379,21 @@ namespace DMMFight
                 {
                     if (GlobalData.Attributes[i].id == int.Parse(id))//若当前显示ID和对象池中的ID相同,则会更新对应的属性值
                     {
-                        if (!CSVRead.SetModelValue(fieldName, float.Parse(changedValue), GlobalData.Attributes[i]))
+                        if (!CSVRead.SetModelValue(fieldName, changedValue, GlobalData.Attributes[i]))
                         {
                             MessageBox.Show("属性值更新失败,请检查输入是否合法");
                         }
-                       
+
                         return;
                     }
                 }
             }
             MessageBox.Show("属性值更新失败,请检查输入是否合法");
         }
-
+        /// <summary>
+        /// 创建简要信息浏览控件
+        /// </summary>
+        /// <param name="id">对象的唯一标识符</param>
         private void CreatSimplePanel(int id)
         {
             Attributes attributes = new Attributes();
@@ -246,33 +409,94 @@ namespace DMMFight
             TextBox textBox = new TextBox();
             textBox.Size = new Size(100, 29);
             textBox.Location = new Point(5, 4);
+            textBox.Font = new Font("微软雅黑", 12, FontStyle.Regular);
             textBox.Name = "ShowName_" + attributes.id;
+            textBox.Text = attributes.name;
+            textBox.LostFocus += ValueChange;
+            textBox.Click += SimpleInfoOnClick;
 
             ComboBox comboBox = new ComboBox();
             comboBox.Size = new Size(85, 30);
             comboBox.Location = new Point(110, 3);
-            comboBox.Font = new Font("微软雅黑", 12, FontStyle.Bold);
+            comboBox.Font = new Font("微软雅黑", 12, FontStyle.Regular);
+            comboBox.Items.Add("阵营A");
+            comboBox.Items.Add("阵营B");
+            comboBox.Items.Add("阵营C");
+            comboBox.Items.Add("阵营D");
+            comboBox.Items.Add("阵营E");
+            comboBox.Items.Add("阵营F");
+            comboBox.SelectedIndex = 0;
             comboBox.Name = "CampCombox_" + attributes.id;
+            comboBox.SelectedIndexChanged += ValueChange;
+            // comboBox.Click += SimpleInfoOnClick;
 
             Label label1 = new Label();
             label1.Size = new Size(108, 21);
             label1.Location = new Point(201, 10);
             label1.Name = "ShowHP_" + attributes.id;
+            label1.Font = new Font("微软雅黑", 12, FontStyle.Regular);
+            label1.Text = "HP:" + attributes.hp.ToString();
+            label1.Click += SimpleInfoOnClick;
 
             Label label2 = new Label();
             label2.Size = new Size(141, 21);
             label2.Location = new Point(314, 10);
             label2.Name = "ShowMaxAtk" + attributes.id;
+            label2.Font = new Font("微软雅黑", 12, FontStyle.Regular);
+            label2.Text = "最大攻击:" + attributes.atkMax.ToString();
+            label2.Click += SimpleInfoOnClick;
 
             Label label3 = new Label();
             label3.Size = new Size(109, 21);
             label3.Location = new Point(465, 10);
             label3.Name = "ShowDef" + attributes.id;
+            label3.Font = new Font("微软雅黑", 12, FontStyle.Regular);
+            label3.Text = "防御:" + attributes.def.ToString();
+            label3.Click += SimpleInfoOnClick;
 
             Panel templet = new Panel();
             templet.Size = new Size(587, 44);
             templet.Location = new Point(3, 3);
             templet.Name = "SimplePanel_" + attributes.id;
+            templet.Click += SimpleInfoOnClick;
+
+            templet.Controls.Add(textBox);
+            templet.Controls.Add(comboBox);
+            templet.Controls.Add(label1);
+            templet.Controls.Add(label2);
+            templet.Controls.Add(label3);
+
+            SimpleInfoFlowLayoutPanel.Controls.Add(templet);
+        }
+
+        /// <summary>
+        /// 根据ID,将属性值更新到右侧的分页栏中
+        /// </summary>
+        /// <param name="id">对象唯一标识符</param>
+        private void SetAttributesToRight(int id)
+        {
+            Attributes attributes = new Attributes();
+
+            for (int i = 0; i < GlobalData.Attributes.Count; i++)
+            {
+                if (GlobalData.Attributes[i].id == id)
+                {
+                    attributes = GlobalData.Attributes[i];
+                }
+            }
+
+            Type type = typeof(Attributes);
+
+            foreach (PropertyInfo property in type.GetProperties())
+            {
+                if (GetControls(this, property.Name,1).Count > 0)
+                {
+                    var player = GetControls(this, property.Name,1)[0];
+                    player.Text = CSVRead.GetModelValue(property.Name, attributes);
+                }
+
+            }
+            GetControls(this, "AttribatesShowTab", 2)[0].Name = "AttribatesShowTab_" + id;
 
         }
     }
