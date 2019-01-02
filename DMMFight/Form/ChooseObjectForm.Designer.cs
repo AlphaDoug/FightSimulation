@@ -56,7 +56,7 @@
             this.groupBox1.Font = new System.Drawing.Font("微软雅黑", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.groupBox1.Location = new System.Drawing.Point(42, 34);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(614, 405);
+            this.groupBox1.Size = new System.Drawing.Size(670, 405);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "对象池";
@@ -65,7 +65,7 @@
             // 
             this.SimpleInfoFlowLayoutPanel.Location = new System.Drawing.Point(6, 42);
             this.SimpleInfoFlowLayoutPanel.Name = "SimpleInfoFlowLayoutPanel";
-            this.SimpleInfoFlowLayoutPanel.Size = new System.Drawing.Size(602, 357);
+            this.SimpleInfoFlowLayoutPanel.Size = new System.Drawing.Size(658, 357);
             this.SimpleInfoFlowLayoutPanel.TabIndex = 1;
             // 
             // StartFight
@@ -104,7 +104,7 @@
             // AddObj
             // 
             this.AddObj.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.AddObj.Location = new System.Drawing.Point(279, 477);
+            this.AddObj.Location = new System.Drawing.Point(301, 477);
             this.AddObj.Name = "AddObj";
             this.AddObj.Size = new System.Drawing.Size(148, 31);
             this.AddObj.TabIndex = 2;
@@ -124,7 +124,7 @@
             // RefreshObj
             // 
             this.RefreshObj.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.RefreshObj.Location = new System.Drawing.Point(508, 477);
+            this.RefreshObj.Location = new System.Drawing.Point(539, 477);
             this.RefreshObj.Name = "RefreshObj";
             this.RefreshObj.Size = new System.Drawing.Size(148, 31);
             this.RefreshObj.TabIndex = 2;
@@ -204,7 +204,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1122, 612);
+            this.ClientSize = new System.Drawing.Size(1158, 612);
             this.Controls.Add(this.AttribatesShowTab_0);
             this.Controls.Add(this.DeleteObj);
             this.Controls.Add(this.RefreshObj);

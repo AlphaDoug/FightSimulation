@@ -41,7 +41,16 @@ namespace DMMFight
         public string damageType;
 
         public string info;
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ownPlayerCamp">阵营</param>
+        /// <param name="ownPlayerName">名字</param>
+        /// <param name="fightType">攻击方式(普攻/技能....)</param>
+        /// <param name="targetPlayerCamp">目标阵营</param>
+        /// <param name="targetPlayerName">目标名称</param>
+        /// <param name="damage">造成伤害</param>
+        /// <param name="damageType">伤害方式(白字/暴击/.....)</param>
         public FightInfo(string ownPlayerCamp,string ownPlayerName,string fightType,string targetPlayerCamp,string targetPlayerName,string damage,string damageType)
         {
             this.ownPlayerCamp = ownPlayerCamp;

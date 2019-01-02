@@ -26,5 +26,38 @@ namespace DMMFight
         {
 
         }
+        /// <summary>
+        /// 窗口加载完成之后开始模拟战斗
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FightingForm_Load(object sender, EventArgs e)
+        {
+            FightStart();
+        }
+        /// <summary>
+        /// 战斗开始,开启对象池中所有玩家的战斗协程
+        /// </summary>
+        private void FightStart()
+        {
+            for (int i = 0; i < GlobalData.Attributes.Count; i++)
+            {
+                Fight fight = new Fight(GlobalData.Attributes[i]);
+                fight.FightStart();
+            }
+
+        }
+
+        private void OutPutMsg()
+        {
+
+        }
+        /// <summary>
+        /// 只剩一方,战斗结束
+        /// </summary>
+        private void FightStop()
+        {
+                
+        }
     }
 }

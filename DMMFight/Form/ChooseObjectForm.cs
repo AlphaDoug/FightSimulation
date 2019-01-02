@@ -23,7 +23,7 @@ namespace DMMFight
         /// </summary>
         private List<Attributes> players = new List<Attributes>();
 
-
+        private GroupBox groupBox = new GroupBox();
 
         public ChooseObjectForm(int campNum, Form form)
         {
@@ -316,39 +316,36 @@ namespace DMMFight
             }
             MessageBox.Show("属性值更新失败,请检查输入是否合法");
         }
-
+        /// <summary>
+        /// 简要信息浏览框的勾选框点击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SimpleInfoOnClick(object sender, EventArgs e)
         {
             int id = 0;
-            try
+
+            RadioButton radioButton = sender as RadioButton;
+            id = int.Parse(radioButton.Name.Split('_')[1]);
+            if (radioButton.Checked)
             {
-                id = int.Parse(((Control)sender).Name.Split('_')[1]);
-                if (((Control)sender).BackColor != Color.Silver)
-                {
-                    ((Control)sender).BackColor = Color.Silver;
-                    //((Panel)sender).BorderStyle = BorderStyle.Fixed3D;
-                }
-                else
-                {
-                    ((Control)sender).BackColor = Control.DefaultBackColor;
-                   // ((Panel)sender).BorderStyle = BorderStyle.None;
-                }
+                return;
             }
-            catch 
+            else
             {
-                id = int.Parse(((Control)sender).Parent.Name.Split('_')[1]);
-                if (((Control)sender).Parent.BackColor != Color.Silver)
+
+                //遍历所有相同的radiobutton,设置为false
+                var radiobtns = GetControls(this, "ShowRadioBtn", 2);
+                for (int i = 0; i < radiobtns.Count; i++)
                 {
-                    ((Control)sender).Parent.BackColor = Color.Silver;
-                   // ((Panel)(((Panel)sender).Parent)).BorderStyle = BorderStyle.Fixed3D;
+                    if (((RadioButton)radiobtns[i]).Checked)
+                    {
+                        ((RadioButton)radiobtns[i]).Checked = false;
+                    }
                 }
-                else
-                {
-                    ((Control)sender).Parent.BackColor = Control.DefaultBackColor;
-                   // ((Panel)(((Panel)sender).Parent)).BorderStyle = BorderStyle.None;
-                }
+                radioButton.Checked = true;
             }
-            
+
             SetAttributesToRight(id);
 
         }
@@ -413,7 +410,7 @@ namespace DMMFight
             textBox.Name = "ShowName_" + attributes.id;
             textBox.Text = attributes.name;
             textBox.LostFocus += ValueChange;
-            textBox.Click += SimpleInfoOnClick;
+            //textBox.Click += SimpleInfoOnClick;
 
             ComboBox comboBox = new ComboBox();
             comboBox.Size = new Size(85, 30);
@@ -436,7 +433,7 @@ namespace DMMFight
             label1.Name = "ShowHP_" + attributes.id;
             label1.Font = new Font("微软雅黑", 12, FontStyle.Regular);
             label1.Text = "HP:" + attributes.hp.ToString();
-            label1.Click += SimpleInfoOnClick;
+            //label1.Click += SimpleInfoOnClick;
 
             Label label2 = new Label();
             label2.Size = new Size(141, 21);
@@ -444,7 +441,7 @@ namespace DMMFight
             label2.Name = "ShowMaxAtk" + attributes.id;
             label2.Font = new Font("微软雅黑", 12, FontStyle.Regular);
             label2.Text = "最大攻击:" + attributes.atkMax.ToString();
-            label2.Click += SimpleInfoOnClick;
+            //label2.Click += SimpleInfoOnClick;
 
             Label label3 = new Label();
             label3.Size = new Size(109, 21);
@@ -452,19 +449,32 @@ namespace DMMFight
             label3.Name = "ShowDef" + attributes.id;
             label3.Font = new Font("微软雅黑", 12, FontStyle.Regular);
             label3.Text = "防御:" + attributes.def.ToString();
-            label3.Click += SimpleInfoOnClick;
+            //label3.Click += SimpleInfoOnClick;
+
+            RadioButton radioButton = new RadioButton();
+            radioButton.Size = new Size(21, 21);
+            radioButton.Location = new Point(600, 10);
+            radioButton.Name = "ShowRadioBtn_" + attributes.id;
+            radioButton.Font = new Font("微软雅黑", 12, FontStyle.Regular);
+            radioButton.Text = " ";
+            radioButton.AutoSize = false;
+            radioButton.AutoCheck = false;
+            radioButton.Click += SimpleInfoOnClick;
 
             Panel templet = new Panel();
-            templet.Size = new Size(587, 44);
+            templet.Size = new Size(650, 44);
             templet.Location = new Point(3, 3);
             templet.Name = "SimplePanel_" + attributes.id;
-            templet.Click += SimpleInfoOnClick;
+            //templet.Click += SimpleInfoOnClick;
+
+           
 
             templet.Controls.Add(textBox);
             templet.Controls.Add(comboBox);
             templet.Controls.Add(label1);
             templet.Controls.Add(label2);
             templet.Controls.Add(label3);
+            templet.Controls.Add(radioButton);
 
             SimpleInfoFlowLayoutPanel.Controls.Add(templet);
         }

@@ -28,6 +28,10 @@ namespace DMMFight
         /// <summary>
         public float fightForce { set; get; }
         /// <summary>
+        /// 等级
+        /// </summary>
+        public int lv { set; get; }
+        /// <summary>
         /// 生命
         /// <summary>
         public float hp { set; get; }
