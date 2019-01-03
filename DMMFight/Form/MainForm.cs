@@ -44,7 +44,7 @@ namespace DMMFight
             }
 
             //CreatNewClassTxt();
-
+            CreatNewGetFight();
 
             var content = ChooseNumComboBox.SelectedIndex;
 
@@ -69,12 +69,40 @@ namespace DMMFight
             {
                 var line1 = @"/// <summary>";
                 var line2 = @"/// " + GlobalData.AttributesCSVs[i].name;
-                var line3 = @"/// <summary>";
+                var line3 = @"/// </summary>";
                 var line4 = @"public float " + GlobalData.AttributesCSVs[i].key + @" { set; get; }";
                 sw.WriteLine(line1);
                 sw.WriteLine(line2);
                 sw.WriteLine(line3);
                 sw.WriteLine(line4);
+            }
+
+            sw.Close();
+            fs.Close();
+        }
+        /// <summary>
+        /// 战斗即时属性计算
+        /// </summary>
+        private void CreatNewGetFight()
+        {
+            FileStream fs = new FileStream("D:\\AAA\\B.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+            StreamWriter sw = new StreamWriter(fs, Encoding.GetEncoding(936));
+            for (int i = 0; i < GlobalData.GetFightCSVs.Count; i++)
+            {
+                var line1 = @"/// <summary>";
+                var line2 = @"/// " + GlobalData.GetFightCSVs[i].name;
+                var line3 = @"/// </summary>";
+                var line4 = @"public double " + GlobalData.GetFightCSVs[i].key + @"()";
+                var line5 = @"{";
+                var line6 = @"return " + GlobalData.GetFightCSVs[i].count + ";";
+                var line7 = @"}";
+                sw.WriteLine(line1);
+                sw.WriteLine(line2);
+                sw.WriteLine(line3);
+                sw.WriteLine(line4);
+                sw.WriteLine(line5);
+                sw.WriteLine(line6);
+                sw.WriteLine(line7);
             }
 
             sw.Close();

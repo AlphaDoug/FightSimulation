@@ -147,7 +147,7 @@ namespace DMMFight
         bool CheckDodgy(Attributes A ,Attributes B)
         {
             float hitfinal = 0;
-            hitfinal = Math.Max(25000, A.hit / (A.hit + B.dodgy * GlobalData.dodgyFactor * 0.0001f) * 100000 + (A.lv - B.lv) / 5 * GlobalData.levelMax);
+            hitfinal = Math.Max(25000, A.hit / (A.hit + B.dodgy * A.GetFightDodgyFactor() * 0.0001f) * 100000 + (A.lv - B.lv) / 5 * A.GetFightLevelMax());
             if (RandomInt(0, 100000) <= hitfinal)
             {
                 
@@ -300,15 +300,15 @@ namespace DMMFight
             var skillFixedFinal = CalculateSkillFixedFinal(A, B);
             if (CalculateAtkFinal(A, B) - CalculateDefFinal(A, B) <= 0)
             {
-                damageBase = atkFinal * GlobalData.protectRadioPvp * skillRatioFinal + skillFixedFinal;
+                damageBase = atkFinal * A.GetFightProtectRadioPvp() * skillRatioFinal + skillFixedFinal;
             }
-            else if ((CalculateAtkFinal(A, B) - CalculateDefFinal(A, B)) / CalculateAtkFinal(A, B) <= GlobalData.protectRadioPvp)
+            else if ((CalculateAtkFinal(A, B) - CalculateDefFinal(A, B)) / CalculateAtkFinal(A, B) <= A.GetFightProtectRadioPvp())
             {
-                damageBase = ((defFinal - (atkFinal - defFinal)) * GlobalData.protectRadioPvp + (atkFinal - defFinal)) * skillRatioFinal + skillFixedFinal;
+                damageBase = ((defFinal - (atkFinal - defFinal)) * A.GetFightProtectRadioPvp() + (atkFinal - defFinal)) * skillRatioFinal + skillFixedFinal;
             }
             else
             {
-                damageBase = (atkFinal * GlobalData.protectRadioPvp + (atkFinal - defFinal)) * skillRatioFinal + skillFixedFinal;
+                damageBase = (atkFinal * A.GetFightProtectRadioPvp() + (atkFinal - defFinal)) * skillRatioFinal + skillFixedFinal;
             }
             return damageBase;
         }
@@ -326,15 +326,15 @@ namespace DMMFight
             var skillFixedFinal = CalculateSkillFixedFinal(A, B);
             if (CalculateAtkFinal(A, B) - CalculateDefFinal(A, B) <= 0)
             {
-                damageBase = atkFinal * GlobalData.protectRadioPve * skillRatioFinal + skillFixedFinal;
+                damageBase = atkFinal * A.GetFightProtectRadioPve() * skillRatioFinal + skillFixedFinal;
             }
-            else if ((CalculateAtkFinal(A, B) - CalculateDefFinal(A, B)) / CalculateAtkFinal(A, B) <= GlobalData.protectRadioPve)
+            else if ((CalculateAtkFinal(A, B) - CalculateDefFinal(A, B)) / CalculateAtkFinal(A, B) <= A.GetFightProtectRadioPve())
             {
-                damageBase = ((defFinal - (atkFinal - defFinal)) * GlobalData.protectRadioPve + (atkFinal - defFinal)) * skillRatioFinal + skillFixedFinal;
+                damageBase = ((defFinal - (atkFinal - defFinal)) * A.GetFightProtectRadioPve() + (atkFinal - defFinal)) * skillRatioFinal + skillFixedFinal;
             }
             else
             {
-                damageBase = (atkFinal * GlobalData.protectRadioPve + (atkFinal - defFinal)) * skillRatioFinal + skillFixedFinal;
+                damageBase = (atkFinal * A.GetFightProtectRadioPve() + (atkFinal - defFinal)) * skillRatioFinal + skillFixedFinal;
             }
             return damageBase;
         }
@@ -469,7 +469,7 @@ namespace DMMFight
 
             #region 绝对暴击判定
             aCritFinal = A.critAssoluta - B.uncritAssoluta;
-            critFinal = Math.Max(5000, A.crit / (A.crit + B.uncrit * GlobalData.critFactor) * 100000 + (A.lv - B.lv) / 5 * GlobalData.levelMax);
+            critFinal = Math.Max(5000, A.crit / (A.crit + B.uncrit * A.GetFightCritFactor() * 100000 + (A.lv - B.lv) / 5 * A.GetFightLevelMax()));
             if (aCritFinal >= 100)//必定暴击
             {
                 ifCrit = true;
@@ -622,7 +622,7 @@ namespace DMMFight
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        private int RandomInt(int min,int max)
+        public static int RandomInt(int min,int max)
         {
             Random random = new Random(new Guid().GetHashCode());
             return random.Next(min, max);
@@ -633,10 +633,16 @@ namespace DMMFight
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        private int RandomInt(float min, float max)
+        public static int RandomInt(float min, float max)
         {
             Random random = new Random(new Guid().GetHashCode());
             return random.Next((int)min, (int)max);
+        }
+        public static float RandomFloat(float min, float max)
+        {
+            Random random = new Random(new Guid().GetHashCode());
+            var a = random.NextDouble();
+            return (float)a * (max - min) + min;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace DMMFight
     {
 
         private const string attributesCSVPath = @"C:\Users\mash\Desktop\DMM战斗模拟器\模拟\DMMFight\DMMFight\Tabels\S-属性定义_attributes.csv";
-        private const string getFightCSVCSVPath = @"C:\Users\mash\Desktop\DMM战斗模拟器\模拟\DMMFight\DMMFight\Tables\S-属性定义_GetFight.csv";
+        private const string getFightCSVCSVPath = @"C:\Users\mash\Desktop\DMM战斗模拟器\模拟\DMMFight\DMMFight\Tabels\S-属性定义_GetFight.csv";
 
         public static List<AttributesCSV> ReadAttributesFromCSV()
         {
@@ -82,7 +82,7 @@ namespace DMMFight
             string[] cs;
             List<GetFightCSV> getFightCSVs = new List<GetFightCSV>();
 
-            FileStream fs = new FileStream(attributesCSVPath, FileMode.Open, FileAccess.Read, FileShare.None);
+            FileStream fs = new FileStream(getFightCSVCSVPath, FileMode.Open, FileAccess.Read, FileShare.None);
             StreamReader sr = new StreamReader(fs, Encoding.GetEncoding(936));
 
             des = ConverStr(sr.ReadLine());
@@ -108,7 +108,15 @@ namespace DMMFight
                     {
                         if (typestr[i] == "Int")
                         {
-                            SetModelValue(key[i], int.Parse(oneline[i]), o);
+                            if (oneline[i] == " ")
+                            {
+                                SetModelValue(key[i], 0, o);
+                            }
+                            else
+                            {
+                                SetModelValue(key[i], int.Parse(oneline[i]), o);
+                            }
+                            
                         }
                         else
                         {
@@ -238,7 +246,8 @@ namespace DMMFight
             }
             string[] s;
             string b;
-            b = str.Remove(0,1);
+            b = str.Replace("\"\"", "\" \"");
+            b = b.Remove(0,1);
             b = b.Remove(b.Length - 1, 1);
             b = b.Replace("\",\"", "?");
             s = b.Split('?');
