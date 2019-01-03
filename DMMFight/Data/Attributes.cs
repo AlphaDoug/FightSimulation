@@ -20,6 +20,10 @@ namespace DMMFight
         /// </summary>
         public string name { set; get; }
         /// <summary>
+        /// 对象类别
+        /// </summary>
+        public string kind{ set; get; }
+        /// <summary>
         /// 对象阵营
         /// </summary>
         public int camp { set; get; }
@@ -1180,7 +1184,7 @@ namespace DMMFight
         /// </summary>
         public double GetFightLevel()
         {
-            return 0;
+            return lv;
         }
         /// <summary>
         /// 暴击默认伤害倍率

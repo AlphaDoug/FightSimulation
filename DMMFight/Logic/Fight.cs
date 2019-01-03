@@ -77,6 +77,24 @@ namespace DMMFight
             /// </summary>
             ignoreDamage = 8
         }
+        /// <summary>
+        /// 伤害来源
+        /// </summary>
+        private enum HitOrgin
+        {
+            /// <summary>
+            /// 正常技能伤害
+            /// </summary>
+            Normal = 1,
+            /// <summary>
+            /// 神器技能
+            /// </summary>
+            Artifact = 2,
+            /// <summary>
+            /// 伙伴技能
+            /// </summary>
+            Parner = 3,
+        }
 
         Attributes m_attribute = null;
         int camp = -1;
@@ -113,10 +131,8 @@ namespace DMMFight
 
         }
         /// <summary>
-        /// 击打一次的过程
+        /// 击打一次的过程,为定时循环函数
         /// </summary>
-        /// <param name="own">伤害发起者</param>
-        /// <param name="target">被击打者</param>
         /// <returns></returns>
         void Fighting(object source, System.Timers.ElapsedEventArgs e)
         {
@@ -133,11 +149,40 @@ namespace DMMFight
         /// <summary>
         /// 一方击打另一方
         /// </summary>
-        /// <param name="A"></param>
-        /// <param name="B"></param>
-        private void A_Hit_B(Attributes A, Attributes B)
+        /// <param name="A">攻击方</param>
+        /// <param name="B">受击方</param>
+        /// <param name="damage">攻击方造成最终伤害</param>
+        /// <param name="thorns">受击方反弹给攻击方的伤害</param>
+        /// <param name="recover">攻击方自身的回复</param>
+        /// <param name="hitType">最终伤害的伤害类型</param>
+        private void A_Hit_B(Attributes A, Attributes B,out float damage,out float thorns ,out float recover,out HitType hitType)
         {
+            damage = 0;
+            thorns = 0;
+            recover = 0;
+            hitType = HitType.Dodgy;
 
+            #region 检查命中
+            if (CheckAssolutaDodgy(A ,B))
+            {
+                //被绝对闪避了
+
+                return;
+            }
+            if (CheckDodgy(A,B))
+            {
+                //被闪避了
+
+                return;
+            }
+            #endregion
+
+            #region 战斗属性调用
+            //攻击方最终伤害
+            var atkFinal = CalculateAtkFinal(A, B);
+            //受击方最终防御
+            var defFinal = CalculateDefFinal(A, B);
+            #endregion
         }
 
         /// <summary>
@@ -215,10 +260,13 @@ namespace DMMFight
         /// <returns>最终对方防御</returns>
         float CalculateDefFinal(Attributes A ,Attributes B)
         {
-            var ignoreRate = 0f;
+            var defMiddle = B.GetFightDef();
+            var ignoreAtk = A.GetFightIgnoreAtk();
+            var ignoreDef = B.GetFightIgnoreDef();
+            var ignoreAtkAdd = A.GetFightIgnoreAtkAdd();
+            var ignoreAtkDec = B.GetFightIgnoreAtkDec();
+            var ignoreRate = ignoreAtk - ignoreDef;
             float ignoreDefRate = 1.0f;
-
-            ignoreRate = A.ignoreAtk - B.ignoreDef;
 
 
 
@@ -232,11 +280,7 @@ namespace DMMFight
                 if (RandomInt(0, 100) <= ignoreRate)
                 {
                     //无视了,防御减少
-
-
                     ignoreDefRate = Math.Max(0.01f, 0.5f - Math.Max(0, A.ignoreAtkAdd * 0.0001f - B.ignoreAtkDec * 0.0001f));
-
-
                 }
                 else
                 {
@@ -247,13 +291,10 @@ namespace DMMFight
             else
             {
                 //无视了,防御减少
-
                 ignoreDefRate = Math.Max(0.01f, 0.5f - Math.Max(0, A.ignoreAtkAdd * 0.0001f - B.ignoreAtkDec * 0.0001f));
-
-
             }
 
-            return B.def * ignoreDefRate;
+            return (float)defMiddle * ignoreDefRate;
            
         }
         /// <summary>
@@ -347,13 +388,11 @@ namespace DMMFight
         /// <returns>最终伤害</returns>
         float CalculateAtkFinal(Attributes A ,Attributes B)
         {
-            var minAtk = 0F;
             var midAtk = 0F;
-            var maxAtk = 0F;
-            var luckykey = 0f;
-            minAtk = A.atkMin;
-            maxAtk = A.atkMax;
-            luckykey = A.luckyKey;
+
+            var minAtk = (float)A.GetFightAtkMin();
+            var maxAtk = (float)B.GetFightAtkMax();
+            var luckykey = (float)A.GetFightLuckyKey();
 
             midAtk = (minAtk + maxAtk) / 2;
             switch (luckykey)
@@ -584,10 +623,6 @@ namespace DMMFight
         float CalculateSpecialCritDamage(Attributes A ,Attributes B, SpecialCrit specialCrit)
         {
             float damageSpecial = 1.0f;
-            int greatAtkAddPercent = 0;
-            int greatAtkMinusPercent = 0;
-            int greatDamageAdd = 0;
-
 
             switch (specialCrit)
             {
@@ -596,25 +631,108 @@ namespace DMMFight
                     break;
                 //精绝一击
                 case SpecialCrit.GreatAtk:
-
+                    damageSpecial = (float)Math.Max(1, 1.3 + A.greatAtkAddPercent * 0.0001 - B.greatAtkMinusPercent * 0.0001) + Math.Max(0, A.greatDamageAdd - B.greatDamageMinus);
                     break;
                 //会心一击
                 case SpecialCrit.CriticalAtk:
-
+                    damageSpecial = (float)Math.Max(1, 1.5 + A.criticalAtkAddPercent * 0.0001 - B.criticalAtkMinusPercent * 0.0001) + Math.Max(0, A.criticalDamageAdd - B.criticalDamageMinus);
                     break;
                 //无双一击
                 case SpecialCrit.LuckyAtk:
-
+                    damageSpecial = (float)Math.Max(1, 2 + A.luckyAtkAddPercent * 0.0001 - B.luckyAtkMinusPercent * 0.0001) + Math.Max(0, A.luckyDamageAdd - B.luckyDamageMinus);
                     break;
                 //致命一击
                 case SpecialCrit.FatalAtk:
-
+                    damageSpecial = (float)Math.Max(1, RandomFloat(3, 5) + A.fatalAtkAddPercent * 0.0001 - B.fatalAtkMinusPercent * 0.0001) + Math.Max(0, A.fatalDamageAdd - B.fatalDamageMinus);
                     break;
                 default:
                     break;
             }
 
             return damageSpecial;
+        }
+        /// <summary>
+        /// 计算最终伤害比率（攻击者为玩家）
+        /// </summary>
+        /// <param name="A">攻击方</param>
+        /// <param name="B">受击方</param>
+        /// <param name="hitOrgin">伤害来源</param>
+        /// <returns>最终伤害比率,默认为1</returns>
+        float CalculateFinalDamagePlayer(Attributes A, Attributes B , HitOrgin hitOrgin)
+        {
+            var fDamageInc = A.GetFightDamageInc();
+            var fDamageDec = B.GetFightDamageDec();
+            var fPvpDamageAddPercent = A.GetFightPvpDamageAddPercent();
+            var fPvpDamageMinusPercent = B.GetFightPvpDamageMinusPercent();
+            var fArtifactAddPercent = A.GetFightArtifactAddPercent();
+            var fArtifactMinusPercent = B.GetFightArtifactMinusPercent();
+            var fPartnerAddPercent = A.GetFightPartnerAddPercent();
+            var fPartnerMinusPercent = B.GetFightPartnerMinusPercent();
+            var fBossDamageAddPercent = A.GetFightBossDamageAddPercent();
+            var fMaxHpPerDamage = A.GetFightMaxHpPerDamage();
+            var fHpMax = B.GetFightHp();
+            double damageFinal = 1;
+            switch (hitOrgin)
+            {
+                case HitOrgin.Normal:
+                    damageFinal = Math.Max(1, 1 + fDamageInc * 0.0001 - fDamageDec * 0.0001) * Math.Max(0.1, 1 + fPvpDamageAddPercent * 0.0001 - fPvpDamageMinusPercent * 0.0001) + fHpMax * fMaxHpPerDamage * 0.0001;
+                    break;
+                case HitOrgin.Artifact:
+                    damageFinal = Math.Max(0.5, fArtifactAddPercent * 0.0001 - fArtifactMinusPercent * 0.0001) * Math.Max(1, 1 + fDamageInc * 0.0001 - fDamageDec * 0.0001) * Math.Max(0.1, 1 + fPvpDamageAddPercent * 0.0001 - fPvpDamageMinusPercent * 0.0001) + fHpMax * fMaxHpPerDamage * 0.0001;
+                    break;
+                case HitOrgin.Parner:
+                    damageFinal = Math.Max(0.5, fPartnerAddPercent * 0.0001 - fPartnerMinusPercent * 0.0001) * Math.Max(1, 1 + fDamageInc * 0.0001 - fDamageDec * 0.0001) * Math.Max(0.1, 1 + fPvpDamageAddPercent * 0.0001 - fPvpDamageMinusPercent * 0.0001) + fHpMax * fMaxHpPerDamage * 0.0001;
+                    break;
+                default:
+                    break;
+            }
+            return (float)damageFinal;
+        }
+        /// <summary>
+        /// 计算最终伤害比率(攻击者为NPC)
+        /// </summary>
+        /// <param name="A">攻击方</param>
+        /// <param name="B">受击方</param>
+        /// <returns>最终伤害比率,默认为1</returns>
+        float CalculateFinalDamageNPC(Attributes A, Attributes B)
+        {
+            double damageFinal = 1;
+            if (A.GetFightLevel() - B.GetFightLevel() >= 0)
+            {
+                damageFinal = 1 + (A.GetFightLevel() - B.GetFightLevel()) * 0.1;
+            }
+            return (float)damageFinal;
+        }
+        /// <summary>
+        /// 反伤计算
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <returns>具体伤害数值</returns>
+        float CalculateThorns(Attributes A, Attributes B)
+        {
+            var reflexRate = B.GetFightReflexRate();
+            var thorns = B.GetFightThorns();
+            var hpMax = A.GetFightHpMax();
+            var damageReflexFinal = Math.Min(hpMax, thorns);
+            return (float)damageReflexFinal;
+
+        }
+        /// <summary>
+        /// 回复处理
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <returns>具体回复数值</returns>
+        float CalculateRecover(Attributes A, Attributes B)
+        {
+            var atkHpRecover = A.GetFightAtkHpRecover();
+            var healRate = A.GetFightHealRate();
+            var healRadio = A.GetFightHealRadio();
+            var cureRadio = A.GetFightCureRadio();
+            var healFinal = 0;
+
+            return (float)healFinal;
         }
         /// <summary>
         /// 生成min和max之间的真随机数
