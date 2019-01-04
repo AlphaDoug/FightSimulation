@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-16"?>
 <Attributes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>14511234</id>
-  <name>0</name>
+  <name>ÎÒÏµÄãµù</name>
+  <kind>player</kind>
   <camp>0</camp>
   <fightForce>0</fightForce>
   <hp>157770</hp>

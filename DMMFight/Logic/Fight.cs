@@ -15,7 +15,7 @@ namespace DMMFight
         /// <summary>
         /// 特殊暴击类型
         /// </summary>
-        private enum SpecialCrit
+        public enum SpecialCrit
         {
             /// <summary>
             /// 没有特殊暴击
@@ -42,7 +42,7 @@ namespace DMMFight
         /// <summary>
         /// 单次攻击结果
         /// </summary>
-        private enum HitType
+        public enum HitType
         {
             /// <summary>
             /// 结果闪避
@@ -80,7 +80,7 @@ namespace DMMFight
         /// <summary>
         /// 伤害来源
         /// </summary>
-        private enum HitOrgin
+        public enum HitOrgin
         {
             /// <summary>
             /// 正常技能伤害
@@ -95,14 +95,28 @@ namespace DMMFight
             /// </summary>
             Parner = 3,
         }
-
+        /// <summary>
+        /// 技能信息
+        /// </summary>
+        public struct SkillInfo
+        {
+            public string Name;
+            public float Ratio;
+        }
+        SkillInfo commonHit = new SkillInfo();
         Attributes m_attribute = null;
+        FightInfo fightInfo = null;
+        string finalInfoStr;
         int camp = -1;
         System.Timers.Timer t;
         public Fight(Attributes attributes)
         {
             m_attribute = attributes;
             camp = attributes.camp;
+            //暂时只有普攻
+
+            commonHit.Name = "普通攻击";
+            commonHit.Ratio = 1.0f;
         }
 
         /// <summary>
@@ -142,6 +156,15 @@ namespace DMMFight
                 if (camp != GlobalData.Attributes[i].camp)//非己方阵营,为敌人
                 {
 
+                    float damage = 0f;
+                    float thorns = 0f;
+                    float recover = 0f;
+                    HitType hitType = HitType.NormalDamage;
+                    A_Hit_B(m_attribute, GlobalData.Attributes[i], HitOrgin.Normal, commonHit, out damage, out thorns, out recover, out hitType);
+
+                    fightInfo = new FightInfo(m_attribute.camp, m_attribute.name, "普通攻击", GlobalData.Attributes[i].camp, GlobalData.Attributes[i].name, damage.ToString(), hitType);
+                    finalInfoStr = fightInfo.GetInfo();
+                    Debug.LogOut(finalInfoStr);
                 }
             }
 
@@ -151,16 +174,27 @@ namespace DMMFight
         /// </summary>
         /// <param name="A">攻击方</param>
         /// <param name="B">受击方</param>
+        /// <param name="hitOrgin">伤害来源</param>
+        /// <param name="skillInfo">技能信息</param>
         /// <param name="damage">攻击方造成最终伤害</param>
         /// <param name="thorns">受击方反弹给攻击方的伤害</param>
         /// <param name="recover">攻击方自身的回复</param>
         /// <param name="hitType">最终伤害的伤害类型</param>
-        private void A_Hit_B(Attributes A, Attributes B,out float damage,out float thorns ,out float recover,out HitType hitType)
+        private void A_Hit_B(Attributes A, Attributes B, HitOrgin hitOrgin, SkillInfo skillInfo, out float damage,out float thorns ,out float recover,out HitType hitType)
         {
+            //最终伤害
             damage = 0;
+            //最终反伤
             thorns = 0;
+            //最终治疗
             recover = 0;
+            //最终伤害类型
             hitType = HitType.Dodgy;
+
+            var baseDamage = 1.0f;
+            var baseCrit = 1.0f;
+            var specialCrit = 1.0f;
+            var finalDamege = 1.0f;
 
             #region 检查命中
             if (CheckAssolutaDodgy(A ,B))
@@ -178,10 +212,54 @@ namespace DMMFight
             #endregion
 
             #region 战斗属性调用
-            //攻击方最终伤害
-            var atkFinal = CalculateAtkFinal(A, B);
-            //受击方最终防御
-            var defFinal = CalculateDefFinal(A, B);
+            if (A.kind == "player" && B.kind == "player")
+            {
+                //PVP
+                //计算PVP基础伤害
+                baseDamage = CalculateDamageBasePVP(A, B);
+
+            }
+            else 
+            {
+                //PVE
+                baseDamage = CalculateDamageBasePVE(A, B);
+            }
+            #endregion
+
+            #region 计算暴击伤害倍率
+            baseCrit = CalculateCritFinal(A, B);
+            if (CheckCritFinal(A,B))
+            {
+                hitType = HitType.CritDamage;
+            }
+            #endregion
+
+            #region 计算特殊暴击伤害倍率
+            var a = hitType;
+            specialCrit = CalculateSpecialCritDamage(A, B, a, out hitType);
+            #endregion
+
+            #region 计算最终伤害比率
+            if (A.kind == "player")
+            {
+                finalDamege = CalculateFinalDamagePlayer(A, B, hitOrgin);
+            }
+            else
+            {
+                finalDamege = CalculateFinalDamageNPC(A, B);
+            }
+            #endregion
+
+            #region 反伤处理
+            thorns = CalculateThorns(A, B);
+            #endregion
+
+            #region 回复处理
+            recover = CalculateRecover(A, B);
+            #endregion
+
+            #region 最终伤害计算
+            damage = baseDamage * baseCrit * specialCrit * finalDamege * baseDamage;
             #endregion
         }
 
@@ -313,9 +391,9 @@ namespace DMMFight
         /// <returns></returns>
         float CalculateSkillRatioFinal(Attributes A ,Attributes B)
         {
-            float skillRatioFinal = 0;
-            skillRatioFinal = A.skillRatio * 0.0001f + A.skillRadioAdd * 0.0001f;
-            return skillRatioFinal;
+            var skillRatioFinal = A.GetFightSkillRatio();
+
+            return (float)skillRatioFinal;
         }
         /// <summary>
         /// 计算技能附加伤害
@@ -324,9 +402,8 @@ namespace DMMFight
         /// <returns></returns>
         float CalculateSkillFixedFinal(Attributes A ,Attributes B)
         {
-            float skillFixedFinal = 0;
-            skillFixedFinal = A.skillFixed * Math.Max(1, A.skillFixedAdd * 0.0001f);
-            return skillFixedFinal;
+            var skillFixedFinal = A.GetFightSkillFixed();
+            return (float)skillFixedFinal;
         }
         /// <summary>
         /// 计算PVP基础伤害
@@ -501,14 +578,14 @@ namespace DMMFight
         /// <returns></returns>
         bool CheckCritFinal(Attributes A ,Attributes B)
         {
-            var aCritFinal = 0f;
-            var critFinal = 0f;
+            var crit = A.GetFightCrit();
+            var uncrit = B.GetFightUncrit();
             //是否暴击
             bool ifCrit = false;
 
             #region 绝对暴击判定
-            aCritFinal = A.critAssoluta - B.uncritAssoluta;
-            critFinal = Math.Max(5000, A.crit / (A.crit + B.uncrit * A.GetFightCritFactor() * 100000 + (A.lv - B.lv) / 5 * A.GetFightLevelMax()));
+            var aCritFinal = A.GetFightCritAssoluta() - B.GetFightUncritAssoluta();
+            var critFinal = Math.Max(5000, crit / (crit + uncrit * A.GetFightCritFactor() * 100000 + (A.lv - B.lv) / 5 * A.GetFightLevelMax()));
             if (aCritFinal >= 100)//必定暴击
             {
                 ifCrit = true;
@@ -547,7 +624,7 @@ namespace DMMFight
             return ifCrit;
         }
         /// <summary>
-        /// 计算暴击伤害
+        /// 计算暴击伤害, 若没有暴击则返回1
         /// </summary>
         /// <param name="fightType"></param>
         /// <returns>暴击伤害比率</returns>
@@ -559,13 +636,15 @@ namespace DMMFight
             var critDamageMinus = 0f;
             var critRate = 1.0f;
 
-            critInc = A.critInc;
-            critDec = A.critDec;
-            critDamageAdd = A.critDamageAdd;
-            critDamageMinus = A.critDamageMinus;
-
-
-            critRate = Math.Max(1, 1.3f + critInc * 0.0001f - critDec * 0.0001f) + critDamageAdd - critDamageMinus;
+            if (CheckCritFinal(A ,B))
+            {
+                critInc = A.critInc;
+                critDec = B.critDec;
+                critDamageAdd = A.critDamageAdd;
+                critDamageMinus = B.critDamageMinus;
+                critRate = Math.Max(1, 1.3f + critInc * 0.0001f - critDec * 0.0001f) + critDamageAdd - critDamageMinus;
+            }
+      
             return critRate;
         }
         /// <summary>
@@ -617,35 +696,44 @@ namespace DMMFight
             return specialCrit;
         }
         /// <summary>
-        /// 计算特殊暴击伤害
+        /// 计算特殊暴击伤害,若没有特殊暴击则返回1
         /// </summary>
         /// <returns></returns>
-        float CalculateSpecialCritDamage(Attributes A ,Attributes B, SpecialCrit specialCrit)
+        float CalculateSpecialCritDamage(Attributes A ,Attributes B,HitType lastHitType,out HitType hitType)
         {
             float damageSpecial = 1.0f;
 
+            var specialCrit = CheckSpecialCritFinal(A, B);
+
+            hitType = lastHitType;
             switch (specialCrit)
             {
                 //没有特殊暴击
                 case SpecialCrit.NoSpecialCrit:
+
                     break;
                 //精绝一击
                 case SpecialCrit.GreatAtk:
+                    hitType = HitType.GreatDamage;
                     damageSpecial = (float)Math.Max(1, 1.3 + A.greatAtkAddPercent * 0.0001 - B.greatAtkMinusPercent * 0.0001) + Math.Max(0, A.greatDamageAdd - B.greatDamageMinus);
                     break;
                 //会心一击
                 case SpecialCrit.CriticalAtk:
+                    hitType = HitType.CriticalDamage;
                     damageSpecial = (float)Math.Max(1, 1.5 + A.criticalAtkAddPercent * 0.0001 - B.criticalAtkMinusPercent * 0.0001) + Math.Max(0, A.criticalDamageAdd - B.criticalDamageMinus);
                     break;
                 //无双一击
                 case SpecialCrit.LuckyAtk:
+                    hitType = HitType.LuckyDamage;
                     damageSpecial = (float)Math.Max(1, 2 + A.luckyAtkAddPercent * 0.0001 - B.luckyAtkMinusPercent * 0.0001) + Math.Max(0, A.luckyDamageAdd - B.luckyDamageMinus);
                     break;
                 //致命一击
                 case SpecialCrit.FatalAtk:
+                    hitType = HitType.FatalDamage;
                     damageSpecial = (float)Math.Max(1, RandomFloat(3, 5) + A.fatalAtkAddPercent * 0.0001 - B.fatalAtkMinusPercent * 0.0001) + Math.Max(0, A.fatalDamageAdd - B.fatalDamageMinus);
                     break;
                 default:
+
                     break;
             }
 

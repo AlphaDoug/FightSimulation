@@ -132,39 +132,6 @@ namespace DMMFight
             public string name;
             public float value;
         }
-        /// <summary>
-        /// 战斗实时信息
-        /// </summary>
-        public class FightingInfo
-        {
-            /// <summary>
-            /// 攻击方阵营
-            /// </summary>
-            public string ownPlayerCamp;
-            /// <summary>
-            /// 攻击方名称
-            /// </summary>
-            public string ownPlayerName;
-            /// <summary>
-            /// 攻击方式(普攻/技能....)
-            /// </summary>
-            public string fightType;
-            /// <summary>
-            /// 目标阵营
-            /// </summary>
-            public string targetPlayerCamp;
-            /// <summary>
-            /// 目标名称
-            /// </summary>
-            public string targetPlayerName;
-            /// <summary>
-            /// 造成伤害
-            /// </summary>
-            public string damage;
-            /// <summary>
-            /// 伤害方式(白字/暴击/.....)
-            /// </summary>
-            public string damageType;
-        }
+        
     }
 }

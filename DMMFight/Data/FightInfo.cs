@@ -51,26 +51,103 @@ namespace DMMFight
         /// <param name="targetPlayerName">目标名称</param>
         /// <param name="damage">造成伤害</param>
         /// <param name="damageType">伤害方式(白字/暴击/.....)</param>
-        public FightInfo(string ownPlayerCamp,string ownPlayerName,string fightType,string targetPlayerCamp,string targetPlayerName,string damage,string damageType)
+        public FightInfo(int ownPlayerCamp,string ownPlayerName,string fightType, int targetPlayerCamp,string targetPlayerName,string damage, Fight.HitType hitType)
         {
-            this.ownPlayerCamp = ownPlayerCamp;
+            switch (ownPlayerCamp)
+            {
+                case 0:
+                    this.ownPlayerCamp = "阵营A";
+                    break;
+                case 1:
+                    this.ownPlayerCamp = "阵营B";
+                    break;
+                case 2:
+                    this.ownPlayerCamp = "阵营C";
+                    break;
+                case 3:
+                    this.ownPlayerCamp = "阵营D";
+                    break;
+                case 4:
+                    this.ownPlayerCamp = "阵营E";
+                    break;
+                case 5:
+                    this.ownPlayerCamp = "阵营F";
+                    break;
+                default:
+                    break;
+            }
+
             this.ownPlayerName = ownPlayerName;
             this.fightType = fightType;
-            this.targetPlayerCamp = targetPlayerCamp;
+
+            switch (targetPlayerCamp)
+            {
+                case 0:
+                    this.targetPlayerCamp = "阵营A";
+                    break;
+                case 1:
+                    this.targetPlayerCamp = "阵营B";
+                    break;
+                case 2:
+                    this.targetPlayerCamp = "阵营C";
+                    break;
+                case 3:
+                    this.targetPlayerCamp = "阵营D";
+                    break;
+                case 4:
+                    this.targetPlayerCamp = "阵营E";
+                    break;
+                case 5:
+                    this.targetPlayerCamp = "阵营F";
+                    break;
+                default:
+                    break;
+            }
+  
             this.targetPlayerName = targetPlayerName;
             this.damage = damage;
-            this.damageType = damageType;
+
+            switch (hitType)
+            {
+                case Fight.HitType.Dodgy:
+                    damageType = "没有命中";
+                    break;
+                case Fight.HitType.NormalDamage:
+                    damageType = "白字";
+                    break;
+                case Fight.HitType.CritDamage:
+                    damageType = "暴击";
+                    break;
+                case Fight.HitType.GreatDamage:
+                    damageType = "精绝一击";
+                    break;
+                case Fight.HitType.CriticalDamage:
+                    damageType = "会心一击";
+                    break;
+                case Fight.HitType.LuckyDamage:
+                    damageType = "无双一击";
+                    break;
+                case Fight.HitType.FatalDamage:
+                    damageType = "致命一击";
+                    break;
+                case Fight.HitType.ignoreDamage:
+                    damageType = "破甲一击";
+                    break;
+                default:
+                    break;
+            }
+            
         }
 
         public string GetInfo()
         {
-            if (damage == "0")
+            if (damageType == "没有命中")
             {
-                return ownPlayerCamp + "的" + ownPlayerName + "使用" + fightType + "击打" + targetPlayerCamp + "的" + targetPlayerName + "没有命中";
+                return ownPlayerCamp + "的" + ownPlayerName + "使用" + fightType + "击打" + targetPlayerCamp + "的" + targetPlayerName + ",没有命中";
             }
             else
             {
-                return ownPlayerCamp + "的" + ownPlayerName + "使用" + fightType + "击打" + targetPlayerCamp + "的" + targetPlayerName + "造成了" + damage + "点" + damageType;
+                return ownPlayerCamp + "的" + ownPlayerName + "使用" + fightType + "击打" + targetPlayerCamp + "的" + targetPlayerName + ",造成了" + damage + "点" + damageType;
             }
             
         }
