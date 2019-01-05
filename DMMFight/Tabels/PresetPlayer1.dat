@@ -31,7 +31,7 @@
   <fatalDamageAdd>0</fatalDamageAdd>
   <fatalDamageMinus>0</fatalDamageMinus>
   <atkHpRecover>0</atkHpRecover>
-  <luckyKey>0</luckyKey>
+  <luckyKey>5</luckyKey>
   <characterPoint>0</characterPoint>
   <hitAssoluta>0</hitAssoluta>
   <dodgyAssoluta>0</dodgyAssoluta>
@@ -39,7 +39,7 @@
   <uncritAssoluta>0</uncritAssoluta>
   <atkSpeedAddPercent>0</atkSpeedAddPercent>
   <runSpeedAddPercent>0</runSpeedAddPercent>
-  <skillRatio>0</skillRatio>
+  <skillRatio>10000</skillRatio>
   <skillRadioAdd>0</skillRadioAdd>
   <skillFixedAdd>0</skillFixedAdd>
   <atkAddPercent>0</atkAddPercent>

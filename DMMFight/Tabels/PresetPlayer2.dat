@@ -39,7 +39,7 @@
   <uncritAssoluta>0</uncritAssoluta>
   <atkSpeedAddPercent>0</atkSpeedAddPercent>
   <runSpeedAddPercent>0</runSpeedAddPercent>
-  <skillRatio>0</skillRatio>
+  <skillRatio>10000</skillRatio>
   <skillRadioAdd>0</skillRadioAdd>
   <skillFixedAdd>0</skillFixedAdd>
   <atkAddPercent>0</atkAddPercent>

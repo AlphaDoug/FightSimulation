@@ -113,10 +113,10 @@ namespace DMMFight
                     damageType = "没有命中";
                     break;
                 case Fight.HitType.NormalDamage:
-                    damageType = "白字";
+                    damageType = "白字伤害";
                     break;
                 case Fight.HitType.CritDamage:
-                    damageType = "暴击";
+                    damageType = "暴击伤害";
                     break;
                 case Fight.HitType.GreatDamage:
                     damageType = "精绝一击";
