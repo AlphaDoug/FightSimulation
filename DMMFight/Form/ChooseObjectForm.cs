@@ -181,9 +181,11 @@ namespace DMMFight
         /// <summary>
         /// 递归获取父控件下所有指定名称的子控件
         /// </summary>
-        /// <param name="fatherControl"></param>
+        /// <param name="fatherControl">父控件</param>
+        /// <param name="name">子控件name</param>
+        /// <param name="nameType">1为全字匹配,2为下划线前匹配</param>
         /// <returns></returns>
-        private List<Control> GetControls(Control fatherControl,string name,int nameType)
+        public static List<Control> GetControls(Control fatherControl,string name,int nameType)
         {
             Control.ControlCollection sonControls = fatherControl.Controls;
             List<Control> controls = new List<Control>();

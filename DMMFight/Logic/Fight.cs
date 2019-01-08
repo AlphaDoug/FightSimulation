@@ -140,6 +140,7 @@ namespace DMMFight
         Attributes m_attribute = null;
         FightInfo fightInfo = null;
         string finalInfoStr;
+        float realtimeHP;
         int camp = -1;
         bool isReleasingSkill = false;
         /// <summary>
@@ -151,10 +152,13 @@ namespace DMMFight
         {
             m_attribute = attributes;
             camp = attributes.camp;
+            realtimeHP = (float)m_attribute.GetFightHp();
             //增加此对象使用的技能
             skillInfos.Add(GlobalData.CommanHit);
             skillInfos.Add(GlobalData.Jifengshu);
             skillInfos.Add(GlobalData.Lunshidaofa);
+            skillInfos.Add(GlobalData.Wudaoshu);
+            skillInfos.Add(GlobalData.Yuqishu);
         }
 
         /// <summary>
@@ -167,13 +171,11 @@ namespace DMMFight
             {
                 skillRelease.Enqueue(skillInfos[i]);
             }
-
+            //每隔0.05秒检查队列中是否有可以释放的技能
             Timer timer = new Timer(50);
             timer.Elapsed += ReleaseOneSkill;
             timer.AutoReset = true;
             timer.Enabled = true;
-
-
         }
 
 
@@ -196,8 +198,18 @@ namespace DMMFight
                 if (camp != GlobalData.Attributes[i].camp)//非己方阵营,为敌人
                 {
                     HitType hitType = HitType.NormalDamage;
-                    A_Hit_B(m_attribute, GlobalData.Attributes[i], HitOrgin.Normal, skillInfo, out float damage, out float thorns, out float recover, out hitType);
-                    fightInfo = new FightInfo(m_attribute.camp, m_attribute.name, skillInfo.Name, GlobalData.Attributes[i].camp, GlobalData.Attributes[i].name, damage.ToString(), hitType);
+                    A_Hit_B(m_attribute, GlobalData.Attributes[i], HitOrgin.Normal, skillInfo, out float damage, out float thorns, out float recover, out hitType); 
+                    realtimeHP -= damage;//实时生命减少
+                    fightInfo = new FightInfo(m_attribute.id, 
+                        GlobalData.Attributes[i].id, 
+                        m_attribute.camp, 
+                        m_attribute.name, 
+                        skillInfo.Name,
+                        GlobalData.Attributes[i].camp, 
+                        GlobalData.Attributes[i].name, 
+                        damage, 
+                        hitType, 
+                        realtimeHP);
                     finalInfoStr = fightInfo.GetInfo();
                     if (OutputInfoEvent != null)
                     {

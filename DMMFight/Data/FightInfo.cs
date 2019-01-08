@@ -12,6 +12,14 @@ namespace DMMFight
     class FightInfo
     {
         /// <summary>
+        /// 攻击方ID
+        /// </summary>
+        public int ownID;
+        /// <summary>
+        /// 受击方ID
+        /// </summary>
+        public int targetID;
+        /// <summary>
         /// 攻击方阵营
         /// </summary>
         public string ownPlayerCamp;
@@ -34,11 +42,15 @@ namespace DMMFight
         /// <summary>
         /// 造成伤害
         /// </summary>
-        public string damage;
+        public float damage;
         /// <summary>
         /// 伤害方式(白字/暴击/.....)
         /// </summary>
         public string damageType;
+        /// <summary>
+        /// 对方的实时血量
+        /// </summary>
+        public float targetRealtimeHP;
 
         public string info;
         /// <summary>
@@ -51,8 +63,11 @@ namespace DMMFight
         /// <param name="targetPlayerName">目标名称</param>
         /// <param name="damage">造成伤害</param>
         /// <param name="damageType">伤害方式(白字/暴击/.....)</param>
-        public FightInfo(int ownPlayerCamp,string ownPlayerName,string fightType, int targetPlayerCamp,string targetPlayerName,string damage, Fight.HitType hitType)
+        public FightInfo(int ownID,int targetID, int ownPlayerCamp,string ownPlayerName,string fightType, int targetPlayerCamp,string targetPlayerName,float damage, Fight.HitType hitType, float targetRealtimeHP)
         {
+            this.ownID = ownID;
+            this.targetID = targetID;
+
             switch (ownPlayerCamp)
             {
                 case 0:
@@ -136,7 +151,8 @@ namespace DMMFight
                 default:
                     break;
             }
-            
+
+            this.targetRealtimeHP = targetRealtimeHP;
         }
 
         public string GetInfo()
